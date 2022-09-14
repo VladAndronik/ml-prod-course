@@ -32,3 +32,5 @@ jobs:
           file: ./app-server/Dockerfile
           push: true
           tags: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:buildcache,mode=max
