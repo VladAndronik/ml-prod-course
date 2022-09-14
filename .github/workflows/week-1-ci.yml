@@ -1,0 +1,25 @@
+name: week-1-ci
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'week-1-hw'
+env:
+  IMAGE_NAME: app-server
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login Docker Hub
+        run: |
+          docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+
+      - name: Build & Push
+        run: |
+          docker build --tag ${{env.IMAGE_NAME}}:latest ./app-server/
+          docker push ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest
