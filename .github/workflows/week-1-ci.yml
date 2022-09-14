@@ -22,4 +22,5 @@ jobs:
       - name: Build & Push
         run: |
           docker build --tag ${{env.IMAGE_NAME}}:latest ./app-server/
+          docker tag ${{env.IMAGE_NAME}}:latest ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest
           docker push ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest
