@@ -6,7 +6,8 @@ on:
       - 'main'
       - 'week-1-hw'
 env:
-  IMAGE_NAME: app-server
+  IMAGE_NAME_SERVER: app-server
+  IMAGE_NAME_TRAIN: app-train
 
 jobs:
   build-and-push:
@@ -25,12 +26,22 @@ jobs:
         name: Set up docker build
         uses: docker/setup-buildx-action@v1
       -
-        name: Build & Push
+        name: Build & Push App Server
         uses: docker/build-push-action@v2
         with:
           context: ./week-1/app-server
           file: ./week-1/app-server/Dockerfile
           push: true
-          tags: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:buildcache,mode=max
+          tags: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME_SERVER}}:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME_SERVER}}:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME_SERVER}}:buildcache,mode=max
+      -
+        name: Build & Push App Train
+        uses: docker/build-push-action@v2
+        with:
+          context: ./week-1/app-train
+          file: ./week-1/app-train/Dockerfile
+          push: true
+          tags: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME_TRAIN}}:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME_TRAIN}}:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME_TRAIN}}:buildcache,mode=max
