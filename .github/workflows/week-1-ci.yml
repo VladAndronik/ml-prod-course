@@ -11,10 +11,6 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        projectPath:
-          - ./week-1/
     steps:
       -
         name: Checkout
