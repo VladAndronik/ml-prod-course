@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-app-parallel-train
+spec:
+  completions: 6
+  parallelism: 2
+  template:
+    metadata:
+      name: job-app-train
+    spec:
+      containers:
+      - name: app-train
+        image: 8092/app-train:latest
+      restartPolicy: Never
