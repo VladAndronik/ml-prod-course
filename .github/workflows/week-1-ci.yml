@@ -75,8 +75,11 @@ jobs:
           username: ${{secrets.DOCKER_USERNAME}}
           password: ${{secrets.DOCKER_PASSWORD}}
 
-      - name: Create cluster
-        run: kind create cluster --name ${{env.K8S_CLUSTER_NAME}}
+      - name: Start minikube
+        uses: medyagh/setup-minikube@master
+
+#      - name: Create cluster
+#        run: kind create cluster --name ${{env.K8S_CLUSTER_NAME}}
 
       - name: Try the cluster!
         run: kubectl get pods -A
