@@ -99,8 +99,8 @@ jobs:
           kubectl wait --for=condition=available --timeout=300s deployment/deploy-app-server
           kubectl get pod
 
-      - name: Port forward the service
-        run: kubectl port-forward svc/deploy-app-server 8000:8000
-
-      - name: Test if service alive
-        run: curl localhost:8000
+#      - name: Port forward the service
+#        run: kubectl port-forward svc/deploy-app-server 8000:8000
+#
+#      - name: Test if service alive
+#        run: curl localhost:8000
