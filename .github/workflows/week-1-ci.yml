@@ -6,10 +6,12 @@ on:
       - 'main'
       - 'week-1-hw'
 env:
-  IMAGE_NAME: app-server
+  IMAGE_NAME_SERVER: app-server
+  IMAGE_NAME_TRAIN: app-train
+  K8S_CLUSTER_NAME: week-1-k8s
 
 jobs:
-  build-and-push:
+  build-and-push-app-server:
     runs-on: ubuntu-latest
     steps:
       -
@@ -28,9 +30,77 @@ jobs:
         name: Build & Push
         uses: docker/build-push-action@v2
         with:
-          context: ./app-server
-          file: ./app-server/Dockerfile
+          context: ./week-1/app-server
+          file: ./week-1/app-server/Dockerfile
           push: true
-          tags: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME}}:buildcache,mode=max
+          tags: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME_SERVER}}:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME_SERVER}}:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME_SERVER}}:buildcache,mode=max
+
+  build-and-push-app-train:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{secrets.DOCKER_USERNAME}}
+          password: ${{secrets.DOCKER_PASSWORD}}
+
+      - name: Set up docker build
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build & Push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./week-1/app-train
+          file: ./week-1/app-train/Dockerfile
+          push: true
+          tags: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME_TRAIN}}:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME_TRAIN}}:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{env.IMAGE_NAME_TRAIN}}:buildcache,mode=max
+
+  k8s-commands:
+    runs-on: ubuntu-latest
+    name: run pods, jobs, deployments
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{secrets.DOCKER_USERNAME}}
+          password: ${{secrets.DOCKER_PASSWORD}}
+
+      - name: Start minikube
+        uses: medyagh/setup-minikube@master
+
+#      - name: Create cluster
+#        run: kind create cluster --name ${{env.K8S_CLUSTER_NAME}}
+
+      - name: Try the cluster!
+        run: kubectl get pods -A
+
+      - name: Run pod with server
+        run: kubectl create -f ./week-1/k8s/pod-app-server.yml
+
+      - name: Run job for train
+        run: |
+          kubectl create -f ./week-1/k8s/job-app-train.yml
+          kubectl wait --for=condition=complete --timeout=300s job/job-app-parallel-train
+          kubectl get pod
+
+      - name: Run deployment for server
+        run: |
+          kubectl create -f ./week-1/k8s/deployment-app-server.yml
+          kubectl wait --for=condition=available --timeout=300s deployment/deploy-app-server
+          kubectl get pod
+
+      - name: Port forward the service
+        run: kubectl port-forward svc/deploy-app-server 8000:8000 &
+
+      - name: Test if service alive
+        run: curl localhost:8000
