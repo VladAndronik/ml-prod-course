@@ -14,6 +14,9 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       -
+        name: Start minikube
+        uses: medyagh/setup-minikube@master
+      -
         name: Create persistent volume
         run: kubectl create -f minio/pv.yaml
 
