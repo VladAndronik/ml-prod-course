@@ -18,13 +18,13 @@ jobs:
         uses: medyagh/setup-minikube@master
       -
         name: Create persistent volume
-        run: kubectl create -f minio/pv.yaml
+        run: kubectl create -f week-2/minio/pv.yaml
 
       - name: Create services
-        run: kubectl create -f minio/services.yaml
+        run: kubectl create -f week-2/minio/services.yaml
 
       - name: Create deployment
-        run: kubectl create -f minio/deployment.yaml
+        run: kubectl create -f week-2/minio/deployment.yaml
 
       - name: Try the cluster!
         run: kubectl get pods -A
