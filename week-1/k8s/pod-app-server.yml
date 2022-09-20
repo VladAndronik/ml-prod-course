@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: pod-app-server
-spec:
-  containers:
-    - image: 8092/app-server:latest
-      name: pod-app-server

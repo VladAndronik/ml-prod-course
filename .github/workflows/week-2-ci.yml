@@ -1,0 +1,24 @@
+name: week-2-ci
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'week-2'
+
+jobs:
+  launch-minio:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Run minio
+        run: |
+          kubectl create -f minio/pv.yaml
+          kubectl create -f minio/services.yaml
+          kubectl create -f minio/deployment.yaml
+
+      - name: Try the cluster!
+        run: kubectl get pods -A
