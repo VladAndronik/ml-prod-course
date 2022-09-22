@@ -14,6 +14,7 @@ kubectl create -f minio/deployment.yaml
 Run tests
 
 ```
+kubectl port-forward svc/minio-service-api 9000:9000
 python -m minio_prj.tests
 ```
 
