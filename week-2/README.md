@@ -45,3 +45,27 @@ docker run -it --rm -v $PWD/multiproc/data:/multiprocess/data -v $PWD/multiproc/
 Result with len data: 5668, n_jobs=1, n_chunks=1, time = 0.4322793483734131
 Result with len data: 5668, n_jobs=8, n_chunks=20, time = 0.1262524127960205
 ```
+
+
+## DVC
+
+```
+cd dvc_stuff/
+dvc init --subdir
+dvc add data/train.csv
+
+git add data/.gitignore data/train.csv.dvc
+git commit -m "add dvc data"
+
+dvc remote add -d minio s3://dvc-test
+dvc remote modify minio endpointurl http://0.0.0.0:9000
+
+git add .dvc/config
+git commit -m "added config for storage"
+git push origin week-2
+
+export AWS_ACCESS_KEY_ID=minio
+export AWS_SECRET_ACCESS_KEY=minio123
+dvc push
+
+```
