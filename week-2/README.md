@@ -12,7 +12,6 @@ kubectl create -f minio_prj/deployment.yaml
 ```
 
 ### Run tests
-
 ```
 kubectl port-forward svc/minio-service-api 9000:9000
 python -m minio_prj.tests
@@ -33,6 +32,10 @@ npy | 0.3815917 | 0.0032780 | 0.055948734283447266
 xr | 0.4675292 | 0.0231752 | 0.007308244705200195
 parquet | 0.4689798 | 0.0071616 | 0.005130767822265625
 
+Overall:
+    Did not have the experience with all packages. From research point of view, .csv is the best for smaller to medium datasets.
+    Parquet is a good idea for bigger data, it has better interface than other binary formats.
+    For production, using xr or h5 formats might be better idea as they have faster loading & saving speed, but for research might be clumsy.
 
 ## Model inference multiprocessing
 
@@ -70,7 +73,6 @@ dvc push
 ```
 
 ## LabelStudio
-
 Solving detection problem, detecting bounding boxes for class **person**
 
 ### Deploy using Docker
