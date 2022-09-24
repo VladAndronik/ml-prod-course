@@ -67,5 +67,14 @@ git push origin week-2
 export AWS_ACCESS_KEY_ID=minio
 export AWS_SECRET_ACCESS_KEY=minio123
 dvc push
+```
 
+## LabelStudio
+
+Solving detection problem, detecting bounding boxes for class **person**
+
+### Deploy using Docker
+```
+docker pull heartexlabs/label-studio:latest
+docker run -it -p 8080:8080 -v `pwd`/mydata:/label-studio/data heartexlabs/label-studio:latest
 ```
