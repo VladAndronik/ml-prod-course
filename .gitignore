@@ -1,3 +1,6 @@
 venv/
 .idea
 minikube
+.ipynb_checkpoints
+__pycache__
+mydata/
