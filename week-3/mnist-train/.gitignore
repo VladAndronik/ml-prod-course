@@ -1,0 +1,8 @@
+venv/
+.idea
+minikube
+.ipynb_checkpoints
+__pycache__
+data/
+logs/
+wandb/
