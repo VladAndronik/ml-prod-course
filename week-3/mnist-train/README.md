@@ -18,3 +18,7 @@ python mnist_train/cli.py load-data ./data
 python mnist_train/cli.py train conf/config.yaml
 python mnist_train/cli.py evaluate logs/weights/checkpoint_stage1/model.pth conf/config.yaml
 ```
+## Tests
+```
+make test_all
+```

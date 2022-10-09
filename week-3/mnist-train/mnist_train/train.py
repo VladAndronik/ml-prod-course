@@ -7,11 +7,11 @@ from torch.utils.data import DataLoader
 
 from mnist_train.data import load_data
 from mnist_train.model import Model
-from mnist_train.utils import get_config
+from mnist_train.utils import get_config, get_device
 
 root = Path(__file__).parent.parent
 path_config = root / 'conf/config.yaml'
-device = 'cuda:0'
+device = get_device()
 
 
 def init_dirs(config):
@@ -30,7 +30,9 @@ def init_loaders(config):
     }
 
     datasets_kwargs = {'norm1': config['data']['normalize_mean'],
-                       'norm2': config['data']['normalize_std']}
+                       'norm2': config['data']['normalize_std'],
+                       'n_samples': config['data']['n_samples']
+                       }
 
     dataset_train, dataset_test = load_data(dir_data, **datasets_kwargs)
 

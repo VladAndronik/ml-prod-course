@@ -2,6 +2,7 @@ import torch
 import torch.nn.functional as F
 from torch import optim
 from torch.optim.lr_scheduler import StepLR
+from pathlib import Path
 
 from mnist_train.networks import Net
 
@@ -10,6 +11,7 @@ class Model:
     def __init__(self, config, device):
         self.config = config
         self.device = device
+        self.root = Path(__file__).parent.parent
 
         self.model = Net().to(device).train().requires_grad_(True)
         self.optimizer = optim.Adadelta(self.model.parameters(), lr=config['train_params']['lr'])
@@ -75,9 +77,14 @@ class Model:
             python mnist_train/cli.py train conf/config.yaml
             python mnist_train/cli.py evaluate logs/weights/checkpoint_stage1/model.pth conf/config.yaml
             ```
+            
+            ## Tests
+            ```
+            make test_all
+            ```            
         """
         s = '\n'.join(map(str.strip, s.split('\n')))
-        with open('../README.md', 'w') as f:
+        with open(self.root / 'README.md', 'w') as f:
             f.write(s)
 
 
