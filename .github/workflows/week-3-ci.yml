@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Build
         run: |
-          docker build -f ./week-3/mnist-train/Dockerfile -t mnist-train:latest ./week-3/mnist-train
+          docker build -t mnist-train:latest ./week-3/mnist-train
       - name: Test data
         run: |
           docker run mnist-train:latest make test_data
