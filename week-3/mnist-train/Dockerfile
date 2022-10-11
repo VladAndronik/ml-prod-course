@@ -16,6 +16,5 @@ COPY ./tests /app/tests
 COPY ./Makefile /app/Makefile
 
 ENV PYTHONPATH /app
-ENV WANDB_API_KEY e1609af0abbe597f55eb7e22aa1cc8ff34acc5f8
 
 CMD [ 'bash' ]
