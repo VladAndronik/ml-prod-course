@@ -8,6 +8,7 @@ on:
 env:
   IMAGE_MAIN_NAME: mnist_train
   IMAGE_MAIN_TAG: latest
+  WANDB_API_KEY: ${{secrets.WANDB_API_KEY}}
 
 jobs:
   test:
