@@ -25,7 +25,11 @@ jobs:
           docker run mnist-train:latest make test_data
       - name: Test model
         run: |
-          docker run mnist-train:latest make test_model
+          docker run -e WANDB_API_KEY=${{ secrets.WANDB_API_KEY }} mnist-train:latest make test_model
+      - name: Test code
+        run: |
+          docker run mnist-train:latest make test_code
+
       - name: Test all
         run: |
-          docker run mnist-train:latest make test_all
+          docker run -e WANDB_API_KEY=${{ secrets.WANDB_API_KEY }} mnist-train:latest make test_all
