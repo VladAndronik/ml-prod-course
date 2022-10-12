@@ -2,7 +2,7 @@ from pathlib import Path
 
 from mnist_train.inference import Predictor
 from mnist_train.train import train
-from mnist_train.utils import get_config, get_device
+from mnist_train.utils import get_config, get_device, seed_all
 
 # todo: test on overfit one batch
 # todo: test on running train on small data - check that checkpoints and summaring works end-to-end
@@ -19,6 +19,7 @@ root = Path(__file__).parent.parent
 def test_overfit_on_batch():
     path_config = root / 'tests/conf/test_overfit_config.yaml'
     config = get_config(path_config)
+    seed_all(config['seed'])
     device = get_device()
     train(path_config)
 

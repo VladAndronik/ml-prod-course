@@ -1,13 +1,11 @@
 from pathlib import Path
-import wandb
 
 import torch
 import tqdm
-from torch.utils.data import DataLoader
-
+import wandb
 from mnist_train.data import load_data
 from mnist_train.model import Model
-from mnist_train.utils import get_config, get_device
+from mnist_train.utils import get_config, get_device, seed_all
 
 root = Path(__file__).parent.parent
 path_config = root / 'conf/config.yaml'
@@ -44,6 +42,7 @@ def init_loaders(config):
 
 def train(config_path: Path):
     config = get_config(config_path)
+    seed_all(config['seed'])
     wandb.init(project=config['model_card']['project_name'], entity="vldrnk", name='test-run')
     wandb.config = config
 
