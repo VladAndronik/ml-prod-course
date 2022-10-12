@@ -1,0 +1,10 @@
+.pytest_cache
+.coverage*
+venv/
+.idea
+minikube
+.ipynb_checkpoints
+__pycache__
+data/
+logs/
+wandb/

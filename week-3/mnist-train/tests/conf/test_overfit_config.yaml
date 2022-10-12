@@ -1,0 +1,27 @@
+dir_data: data/
+dir_log: logs/
+dir_weights: tmp/weights/test2
+seed: 17
+image_size: 28
+
+train_params:
+  batch_size: 4
+  epochs: 10
+  lr: 1.0
+  gamma: 0.7
+
+data:
+  num_workers: 0
+  shuffle: false
+  pin_memory: true
+  normalize_mean: 0.1307
+  normalize_std: 0.3081
+  n_samples: 4
+
+logs:
+  log_train_loss: 10
+  log_test_loss: 200
+  log_weights: 500
+
+model_card:
+  project_name: ml-in-production

@@ -1,0 +1,35 @@
+name: week-3-ci
+
+on:
+  push:
+    branches:
+      - 'week-3-hw1'
+
+env:
+  IMAGE_MAIN_NAME: mnist_train
+  IMAGE_MAIN_TAG: latest
+  WANDB_API_KEY: ${{secrets.WANDB_API_KEY}}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          docker build -t mnist-train:latest ./week-3/mnist-train
+      - name: Test data
+        run: |
+          docker run mnist-train:latest make test_data
+      - name: Test model
+        run: |
+          docker run -e WANDB_API_KEY=${{ secrets.WANDB_API_KEY }} mnist-train:latest make test_model
+      - name: Test code
+        run: |
+          docker run mnist-train:latest make test_code
+
+      - name: Test all
+        run: |
+          docker run -e WANDB_API_KEY=${{ secrets.WANDB_API_KEY }} mnist-train:latest make test_all
