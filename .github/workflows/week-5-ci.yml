@@ -1,0 +1,20 @@
+name: week-5-ci
+
+on:
+  push:
+    branches:
+      - 'week-5-hw1'
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build fastapi
+        run: docker build -f ./week-5/Dockerfile -t app_fastapi:latest --target base ./week-5/
+
+      - name: Test fastapi
+        run: docker run app_fastapi:latest pytest -ss ./tests/
