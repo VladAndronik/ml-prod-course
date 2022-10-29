@@ -25,9 +25,11 @@ def get_device():
 
 class Predictor:
     def __init__(self, model_path: str, device=None):
-        self.model = torch.jit.load(Path(model_path) / 'model.pt')
-        if device is None:
-            self.device = get_device()
+        device = device if device is not None else get_device()
+        self.device = device
+
+        self.model = torch.jit.load(Path(model_path) / 'model.pt', map_location=self.device)
+
         self.transform = transforms.Compose([
             transforms.Resize((28, 28)),
             transforms.Grayscale(),
