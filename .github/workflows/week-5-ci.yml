@@ -17,4 +17,4 @@ jobs:
         run: docker build -f ./week-5/Dockerfile -t app_fastapi:latest --target base ./week-5/
 
       - name: Test fastapi
-        run: docker run app_fastapi:latest pytest -ss ./tests/
+        run: docker run -e WANDB_API_KEY=${{ secrets.WANDB_API_KEY }} app_fastapi:latest pytest -ss ./tests/
