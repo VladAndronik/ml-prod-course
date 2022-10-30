@@ -15,6 +15,12 @@ ENV PYTHONPATH /app
 
 CMD [ 'bash' ]
 
+FROM base as app-streamlit
+CMD streamlit run --server.address 0.0.0.0 --server.port 8080 serving/ui_app.py
+
+FROM base as app-fastapi
+CMD uvicorn --host 0.0.0.0 --port 8080 --workers 2 serving.fast_api:app
+
 FROM base as app-seldon
 
 EXPOSE 5000
