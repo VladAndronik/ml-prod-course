@@ -44,4 +44,3 @@ def quantize(save_path):
 
 if __name__ == '__main__':
     quantize('weights/model_static_quantized.pt')
-    # run('weights/model_static_quantized.pt')

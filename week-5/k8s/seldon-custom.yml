@@ -1,7 +1,7 @@
 apiVersion: machinelearning.seldon.io/v1
 kind: SeldonDeployment
 metadata:
-  name: week-5-seldon
+  name: week-5
   namespace: default
 spec:
   annotations:
@@ -23,8 +23,6 @@ spec:
             value: '1'
           - name: SELDON_DEBUG
             value: '1'
-          - name: WANDB_API_KEY
-            value: "69d3861a93872cae14376c0b454a5223882050cb"
           imagePullPolicy: Always
 
     graph:

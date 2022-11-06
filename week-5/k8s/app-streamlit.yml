@@ -16,9 +16,6 @@ spec:
       containers:
         - name: app-streamlit
           image: 8092/app-streamlit:latest
-          env:
-          - name: WANDB_API_KEY
-            value: "69d3861a93872cae14376c0b454a5223882050cb"
 ---
 apiVersion: v1
 kind: Service

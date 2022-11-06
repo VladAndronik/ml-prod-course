@@ -35,6 +35,7 @@ def main(batch_size=4, half=False):
     for _ in range(110):
         time1 = time.time()
         _ = model(data)
+        torch.cuda.synchronize(device)
         time1 = time.time() - time1
         times.append(time1)
     memory_after_forward = GPUtil.getGPUs()[0].memoryUsed
