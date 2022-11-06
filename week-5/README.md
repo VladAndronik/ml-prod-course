@@ -63,3 +63,46 @@ Static Quantization (only cpu):
     Memory: Size (MB): 1.206127
 
 Quantization does not affect accuracy too much, but performance dips as it is processed on CPU only.
+
+
+## Cloud Run
+```
+gcloud auth login
+# create service account and generate key file for him. then this command.
+gcloud auth activate-service-account test-account@helical-song-367521.iam.gserviceaccount.com --key-file helical-song-367521-e7c23ab29b30.json
+gcloud auth configure-docker
+docker push gcr.io/helical-song-367521/app-fastapi:latest
+```
+
+
+## K8S engine in GCP
+```
+https://cloud.google.com/kubernetes-engine/docs/deploy-app-cluster#dockerfile
+https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+https://cloud.google.com/sdk/docs/install#deb
+https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling
+```
+
+### Commands
+```
+sudo apt-get install apt-transport-https ca-certificates gnupg
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+sudo apt-get update && sudo apt-get install google-cloud-cli
+sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+
+# create cluster
+gcloud container clusters create-auto mnist-fastapi-cluster --region=us-west1
+gcloud container clusters get-credentials mnist-fastapi-cluster --region us-west1
+
+# push to artifact registry
+gcloud auth configure-docker us-west1-docker.pkg.dev
+docker tag 8092/app-fastapi:latest us-west1-docker.pkg.dev/helical-song-367521/mnist-artifacts/app-fastapi
+gcloud auth configure-docker
+docker push us-west1-docker.pkg.dev/helical-song-367521/mnist-artifacts/app-fastapi
+
+# create deployment and service
+kubectl create deployment app-fastapi --image us-west1-docker.pkg.dev/helical-song-367521/mnist-artifacts/app-fastapi:latest
+kubectl expose deployment app-fastapi --type LoadBalancer --port 80 --target-port 8080
+kubectl get service app-fastapi  # get external IP from it
+```
